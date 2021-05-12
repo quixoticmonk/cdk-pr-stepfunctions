@@ -57,7 +57,7 @@ class CdkPrStepfunctionsStack(Stack):
             ),
             description=f"Build project for {proj_name}",
             environment=_codebuild.BuildEnvironment(
-                build_image=_codebuild.LinuxBuildImage.AMAZON_LINUX_2,
+                build_image=_codebuild.LinuxBuildImage.STANDARD_5_0,
                 compute_type=_codebuild.ComputeType.LARGE,
                 privileged=True
             ),
