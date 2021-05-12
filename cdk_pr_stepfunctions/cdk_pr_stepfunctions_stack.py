@@ -24,12 +24,33 @@ class CdkPrStepfunctionsStack(Stack):
         )
 
         proj1 = self.new_build_project(repo, "pr_specs/buildspec.yaml", "proj1")
-        proj2 = self.new_build_project(repo, "pr_specs/buildspec.yaml", "proj2")
+
+        proj2 = _codebuild.Project(
+            self,
+            "proj_name",
+            badge=True,
+            description="Build project for ",
+            environment=_codebuild.BuildEnvironment(
+                build_image=_codebuild.LinuxBuildImage.STANDARD_5_0,
+                compute_type=_codebuild.ComputeType.LARGE,
+                privileged=True
+            ),
+            project_name="proj_name",
+            build_spec=_codebuild.BuildSpec.from_source_filename(
+                filename="pr_specs/buildspec2.yaml"
+            ),
+            timeout=Duration.minutes(10),
+        )
+
+        input_task = _step_fn.Pass(
+            self,
+            "passstate"
+        )
 
         proj1_tasks = self.new_codebuild_task(proj1)
         proj2_tasks = self.new_codebuild_task(proj2)
 
-        definition = proj1_tasks.next(proj2_tasks)
+        definition = input_task.next(proj1_tasks).next(proj2_tasks)
 
         _fn = _step_fn.StateMachine(
             self,
@@ -65,6 +86,5 @@ class CdkPrStepfunctionsStack(Stack):
             build_spec=_codebuild.BuildSpec.from_source_filename(
                 filename=buildspec_path
             ),
-            timeout=Duration.minutes(10),
-
+            timeout=Duration.minutes(10)
         )

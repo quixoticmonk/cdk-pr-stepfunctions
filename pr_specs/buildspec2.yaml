@@ -3,10 +3,10 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - npm install
+      - ls
   build:
     commands:
-      - npm run build
+      - ls
 artifacts:
-  base-directory: public
-
+  files:
+    - 'public/*'
