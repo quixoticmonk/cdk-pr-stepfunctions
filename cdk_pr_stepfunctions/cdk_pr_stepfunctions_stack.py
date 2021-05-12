@@ -43,7 +43,8 @@ class CdkPrStepfunctionsStack(Stack):
             self,
             f"{project}task",
             project=project,
-            timeout=Duration.minutes(10)
+            timeout=Duration.minutes(10),
+            integration_pattern=_step_fn.IntegrationPattern.RUN_JOB
         )
 
     def new_build_project(self, repo: codecommit.Repository, buildspec_path: str, proj_name: str) -> _codebuild.Project:
