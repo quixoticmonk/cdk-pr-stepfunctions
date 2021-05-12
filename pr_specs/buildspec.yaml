@@ -1,0 +1,11 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Running NPM Install
+      - pwd
+  build:
+    commands:
+      - echo Running npm build
+      - pwd
